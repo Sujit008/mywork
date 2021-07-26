@@ -1,0 +1,3919 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2021-07-23T08:51:30Z"
+    generateName: cart-65ddcdb87d-
+    labels:
+      app: acmefit
+      pod-template-hash: 65ddcdb87d
+      service: cart
+    name: cart-65ddcdb87d-58469
+    namespace: acam-fitness
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: cart-65ddcdb87d
+      uid: 8206a939-115c-43e6-bab3-26fd3d5bcc39
+    resourceVersion: "1386338"
+    uid: 04706d57-bf27-4e77-9111-64f8dd5b030f
+  spec:
+    containers:
+    - env:
+      - name: REDIS_HOST
+        value: cart-redis
+      - name: REDIS_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: password
+            name: cart-redis-pass
+      - name: REDIS_PORT
+        value: "6379"
+      - name: CART_PORT
+        value: "5000"
+      - name: USER_HOST
+        value: users
+      - name: USER_PORT
+        value: "8083"
+      - name: JAEGER_AGENT_HOST
+        value: localhost
+      - name: JAEGER_AGENT_PORT
+        value: "6831"
+      - name: AUTH_MODE
+        value: "1"
+      image: gcr.io/vmwarecloudadvocacy/acmeshop-cart:latest
+      imagePullPolicy: Always
+      name: cart
+      ports:
+      - containerPort: 5000
+        name: cart
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 500m
+          memory: 256Mi
+        requests:
+          cpu: 100m
+          memory: 64Mi
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /data
+        name: acmefit-cart-data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-vrbmr
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: vr17238.billcorp.local
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - emptyDir: {}
+      name: acmefit-cart-data
+    - name: kube-api-access-vrbmr
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-23T08:51:30Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-26T10:04:33Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-26T10:04:33Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-23T08:51:30Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: docker://e2f4fc0e05ff9cf91a4a0356334dd3ee68fd4bf54385a5cc5533d7f9d4b73160
+      image: gcr.io/vmwarecloudadvocacy/acmeshop-cart:latest
+      imageID: docker-pullable://gcr.io/vmwarecloudadvocacy/acmeshop-cart@sha256:9e3eb249f3ad58997248c31872175270aa54065f141f3e5de6455ce7e3804ce2
+      lastState:
+        terminated:
+          containerID: docker://3cf55262b9ee89e7b8ccfee541951f78705f976a50c8feaaac4bf589906a1ac2
+          exitCode: 137
+          finishedAt: "2021-07-25T12:06:11Z"
+          reason: Error
+          startedAt: "2021-07-25T04:56:31Z"
+      name: cart
+      ready: true
+      restartCount: 3
+      started: true
+      state:
+        running:
+          startedAt: "2021-07-26T10:04:32Z"
+    hostIP: 103.142.174.171
+    phase: Running
+    podIP: 10.32.0.13
+    podIPs:
+    - ip: 10.32.0.13
+    qosClass: Burstable
+    startTime: "2021-07-23T08:51:30Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2021-07-21T11:51:59Z"
+    generateName: cart-redis-69d757ddbd-
+    labels:
+      app: acmefit
+      pod-template-hash: 69d757ddbd
+      service: cart-redis
+    name: cart-redis-69d757ddbd-9nbkf
+    namespace: acam-fitness
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: cart-redis-69d757ddbd
+      uid: e4c12bd4-652b-4a4c-a6be-44f589f2e158
+    resourceVersion: "1386240"
+    uid: 1aade125-a91c-4785-91c5-d31e545bc58d
+  spec:
+    containers:
+    - env:
+      - name: REDIS_HOST
+        value: cart-redis
+      - name: REDIS_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: password
+            name: cart-redis-pass
+      image: bitnami/redis
+      imagePullPolicy: Always
+      name: cart-redis
+      ports:
+      - containerPort: 6379
+        name: redis
+        protocol: TCP
+      resources:
+        requests:
+          cpu: 100m
+          memory: 100Mi
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/lib/redis
+        name: cart-redis-data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-z6hvd
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: vr17238.billcorp.local
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - emptyDir: {}
+      name: cart-redis-data
+    - name: kube-api-access-z6hvd
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-21T11:53:26Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-26T10:04:17Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-26T10:04:17Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-21T11:53:26Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: docker://ce0487e750dd9a7cde70c52c65418e9c47adff30dd11516f651bd1eb9e9ab695
+      image: bitnami/redis:latest
+      imageID: docker-pullable://bitnami/redis@sha256:58d5347f6dd2740a1e04098c8436f9f4a07b522bbc7f47941b8a5da0cc5eeca6
+      lastState:
+        terminated:
+          containerID: docker://afe02f2c0b934b158fa5437d3ecdf49ffee1cbc1eae285b990516e520f93c1b4
+          exitCode: 0
+          finishedAt: "2021-07-25T12:06:01Z"
+          reason: Completed
+          startedAt: "2021-07-25T04:56:08Z"
+      name: cart-redis
+      ready: true
+      restartCount: 4
+      started: true
+      state:
+        running:
+          startedAt: "2021-07-26T10:04:16Z"
+    hostIP: 103.142.174.171
+    phase: Running
+    podIP: 10.32.0.5
+    podIPs:
+    - ip: 10.32.0.5
+    qosClass: Burstable
+    startTime: "2021-07-21T11:53:26Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2021-07-21T11:14:40Z"
+    generateName: catalog-669b56bc8d-
+    labels:
+      app: acmefit
+      pod-template-hash: 669b56bc8d
+      service: catalog
+    name: catalog-669b56bc8d-hmk57
+    namespace: acam-fitness
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: catalog-669b56bc8d
+      uid: 143c9cfd-4d62-4644-8b47-533ad45517d7
+    resourceVersion: "1386270"
+    uid: 65d4cc6c-38c3-499b-8d50-bcc75c85f966
+  spec:
+    containers:
+    - env:
+      - name: CATALOG_DB_HOST
+        value: catalog-mongo
+      - name: CATALOG_DB_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: password
+            name: catalog-mongo-pass
+      - name: CATALOG_DB_PORT
+        value: "27017"
+      - name: CATALOG_DB_USERNAME
+        value: mongoadmin
+      - name: CATALOG_PORT
+        value: "8082"
+      - name: CATALOG_VERSION
+        value: v1
+      - name: USERS_HOST
+        value: users
+      - name: USERS_PORT
+        value: "8083"
+      - name: JAEGER_AGENT_HOST
+        value: localhost
+      - name: JAEGER_AGENT_PORT
+        value: "6831"
+      image: gcr.io/vmwarecloudadvocacy/acmeshop-catalog:latest
+      imagePullPolicy: Always
+      name: catalog
+      ports:
+      - containerPort: 8082
+        name: catalog
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /data
+        name: acmefit-catalog-data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-f96nn
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: vr17238.billcorp.local
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - emptyDir: {}
+      name: acmefit-catalog-data
+    - name: kube-api-access-f96nn
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-21T11:14:40Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-26T10:04:21Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-26T10:04:21Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-21T11:14:40Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: docker://e9380f8a9b91a91446f7aa64a9129fe2269eba70a82231f3bf8f0af60487baac
+      image: gcr.io/vmwarecloudadvocacy/acmeshop-catalog:latest
+      imageID: docker-pullable://gcr.io/vmwarecloudadvocacy/acmeshop-catalog@sha256:8fd8df19f3793e901f0e79d809b6d07d964cace9c203510b832a47393c3fc804
+      lastState:
+        terminated:
+          containerID: docker://1e8d7eafaafdfca59db6bc923889ca44618073e2b400d2114b1e02338d316f92
+          exitCode: 137
+          finishedAt: "2021-07-25T12:06:11Z"
+          reason: Error
+          startedAt: "2021-07-25T04:56:20Z"
+      name: catalog
+      ready: true
+      restartCount: 4
+      started: true
+      state:
+        running:
+          startedAt: "2021-07-26T10:04:19Z"
+    hostIP: 103.142.174.171
+    phase: Running
+    podIP: 10.32.0.3
+    podIPs:
+    - ip: 10.32.0.3
+    qosClass: BestEffort
+    startTime: "2021-07-21T11:14:40Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2021-07-21T11:11:51Z"
+    generateName: catalog-mongo-857649f774-
+    labels:
+      app: acmefit
+      pod-template-hash: 857649f774
+      service: catalog-db
+    name: catalog-mongo-857649f774-chxvw
+    namespace: acam-fitness
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: catalog-mongo-857649f774
+      uid: 1efbb1db-ad00-42d1-b88e-756fe3969343
+    resourceVersion: "1385953"
+    uid: c52c0c7b-6500-42ce-86ca-52a5b3a109c2
+  spec:
+    containers:
+    - env:
+      - name: MONGO_INITDB_ROOT_USERNAME
+        value: mongoadmin
+      - name: MONGO_INITDB_DATABASE
+        value: acmefit
+      - name: MONGO_INITDB_ROOT_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: password
+            name: catalog-mongo-pass
+      image: mongo:4
+      imagePullPolicy: IfNotPresent
+      name: catalog-mongo
+      ports:
+      - containerPort: 27017
+        name: catalog-mongo
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /data/db
+        name: mongodata
+      - mountPath: /docker-entrypoint-initdb.d
+        name: mongo-initdb
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-fhffw
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: vr17238.billcorp.local
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - emptyDir: {}
+      name: mongodata
+    - configMap:
+        defaultMode: 420
+        name: catalog-initdb-config
+      name: mongo-initdb
+    - name: kube-api-access-fhffw
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-21T11:11:51Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-26T10:03:40Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-26T10:03:40Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-21T11:11:51Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: docker://8e0785e092de7d768b9918838d5c18ed41be6f33c9682d04e7580c61c7fa1f56
+      image: mongo:4
+      imageID: docker-pullable://mongo@sha256:e83749c0a1c6ae549471483e610e1b96a21f352a40597405039f53b41afab139
+      lastState:
+        terminated:
+          containerID: docker://515230c5d8d4d1ea60f867ab4d32c22e4564c75dc56e24605c2ad54cb5029e6c
+          exitCode: 0
+          finishedAt: "2021-07-25T12:06:00Z"
+          reason: Completed
+          startedAt: "2021-07-25T04:55:55Z"
+      name: catalog-mongo
+      ready: true
+      restartCount: 4
+      started: true
+      state:
+        running:
+          startedAt: "2021-07-26T10:03:38Z"
+    hostIP: 103.142.174.171
+    phase: Running
+    podIP: 10.32.0.4
+    podIPs:
+    - ip: 10.32.0.4
+    qosClass: BestEffort
+    startTime: "2021-07-21T11:11:51Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2021-07-21T12:09:57Z"
+    generateName: frontend-86c5ffb485-
+    labels:
+      app: acmefit
+      pod-template-hash: 86c5ffb485
+      service: frontend
+    name: frontend-86c5ffb485-rbxt8
+    namespace: acam-fitness
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: frontend-86c5ffb485
+      uid: 1c8e80de-e071-4686-83a6-917aaaea0733
+    resourceVersion: "1386191"
+    uid: edba0b33-f7a4-4e46-bc8e-01ed0f4f3e44
+  spec:
+    containers:
+    - env:
+      - name: FRONTEND_PORT
+        value: "3000"
+      - name: USERS_HOST
+        value: users
+      - name: CATALOG_HOST
+        value: catalog
+      - name: ORDER_HOST
+        value: order
+      - name: CART_HOST
+        value: cart
+      - name: USERS_PORT
+        value: "8083"
+      - name: CATALOG_PORT
+        value: "8082"
+      - name: CART_PORT
+        value: "5000"
+      - name: ORDER_PORT
+        value: "6000"
+      - name: JAEGER_AGENT_HOST
+        value: localhost
+      - name: JAEGER_AGENT_PORT
+        value: "6832"
+      image: gcr.io/vmwarecloudadvocacy/acmeshop-front-end:latest
+      imagePullPolicy: Always
+      name: frontend
+      ports:
+      - containerPort: 3000
+        name: frontend
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-2zxbg
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: vr17238.billcorp.local
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-2zxbg
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-21T12:09:57Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-26T10:04:11Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-26T10:04:11Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-21T12:09:57Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: docker://6344cbbc6ec1000e630dddb1070289587f1930167ee616b79f6e1c5df2cdef85
+      image: gcr.io/vmwarecloudadvocacy/acmeshop-front-end:latest
+      imageID: docker-pullable://gcr.io/vmwarecloudadvocacy/acmeshop-front-end@sha256:7e98287b06bcda9b19ce5be45a012bc19505724b89c4afe17e130c8b7b0223bc
+      lastState:
+        terminated:
+          containerID: docker://cb379e5727e6fc3f474ff312df0fc4a75e6f161351dea2a1e396b513a6c66fd3
+          exitCode: 0
+          finishedAt: "2021-07-25T12:06:01Z"
+          reason: Completed
+          startedAt: "2021-07-25T04:56:25Z"
+      name: frontend
+      ready: true
+      restartCount: 4
+      started: true
+      state:
+        running:
+          startedAt: "2021-07-26T10:03:50Z"
+    hostIP: 103.142.174.171
+    phase: Running
+    podIP: 10.32.0.2
+    podIPs:
+    - ip: 10.32.0.2
+    qosClass: BestEffort
+    startTime: "2021-07-21T12:09:57Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2021-07-21T11:41:29Z"
+    generateName: order-5ccf744dd4-
+    labels:
+      app: acmefit
+      pod-template-hash: 5ccf744dd4
+      service: order
+    name: order-5ccf744dd4-qp6wq
+    namespace: acam-fitness
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: order-5ccf744dd4
+      uid: d6a2d64c-c081-4317-bb68-e2c2b3631c9f
+    resourceVersion: "1386353"
+    uid: 636acf2a-bfb3-44fc-a117-030c80b15ca7
+  spec:
+    containers:
+    - env:
+      - name: ORDER_DB_HOST
+        value: order-postgres
+      - name: ORDER_DB_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: password
+            name: order-postgres-pass
+      - name: ORDER_DB_PORT
+        value: "5432"
+      - name: AUTH_MODE
+        value: "1"
+      - name: ORDER_DB_USERNAME
+        value: pgbench
+      - name: PGPASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: password
+            name: order-postgres-pass
+      - name: ORDER_AUTH_DB
+        value: postgres
+      - name: ORDER_PORT
+        value: "6000"
+      - name: PAYMENT_PORT
+        value: "9000"
+      - name: PAYMENT_HOST
+        value: payment
+      - name: USER_HOST
+        value: users
+      - name: USER_PORT
+        value: "8083"
+      - name: JAEGER_AGENT_HOST
+        value: localhost
+      - name: JAEGER_AGENT_PORT
+        value: "6831"
+      image: gcr.io/vmwarecloudadvocacy/acmeshop-order:latest
+      imagePullPolicy: Always
+      name: order
+      ports:
+      - containerPort: 6000
+        name: order
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 500m
+          memory: 256Mi
+        requests:
+          cpu: 100m
+          memory: 64Mi
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /data
+        name: acmefit-order-data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-jvh7m
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: vr17238.billcorp.local
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - emptyDir: {}
+      name: acmefit-order-data
+    - name: kube-api-access-jvh7m
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-21T11:50:36Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-26T10:04:36Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-26T10:04:36Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-21T11:50:35Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: docker://9960594d3b93610ff36421873b66184207f466fe88839c696f6e75c4380348e9
+      image: gcr.io/vmwarecloudadvocacy/acmeshop-order:latest
+      imageID: docker-pullable://gcr.io/vmwarecloudadvocacy/acmeshop-order@sha256:0349106521d476e8a833088c33f6db5ac4c898f00d1b6b6f15d9902ff5fdd0f4
+      lastState:
+        terminated:
+          containerID: docker://85a87e6df1f583d2f51a81095da93e7e0549742af37322aa79efcceff3735b7b
+          exitCode: 137
+          finishedAt: "2021-07-25T12:06:11Z"
+          reason: Error
+          startedAt: "2021-07-25T04:56:33Z"
+      name: order
+      ready: true
+      restartCount: 4
+      started: true
+      state:
+        running:
+          startedAt: "2021-07-26T10:04:35Z"
+    hostIP: 103.142.174.171
+    phase: Running
+    podIP: 10.32.0.16
+    podIPs:
+    - ip: 10.32.0.16
+    qosClass: Burstable
+    startTime: "2021-07-21T11:50:36Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2021-07-21T11:28:18Z"
+    generateName: order-postgres-6cdb48cc6b-
+    labels:
+      app: acmefit
+      pod-template-hash: 6cdb48cc6b
+      service: order-db
+    name: order-postgres-6cdb48cc6b-s9d9h
+    namespace: acam-fitness
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: order-postgres-6cdb48cc6b
+      uid: 21ec7655-62dd-41f7-9113-2523228aeeba
+    resourceVersion: "1386307"
+    uid: d1a14425-65b1-45c4-ba60-5686d53bccf2
+  spec:
+    containers:
+    - env:
+      - name: POSTGRES_USER
+        value: pgbench
+      - name: POSTGRES_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: password
+            name: order-postgres-pass
+      - name: PGBENCH_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: password
+            name: order-postgres-pass
+      - name: PGDATA
+        value: /var/lib/postgresql/data/pgdata
+      image: postgres:9.5
+      imagePullPolicy: Always
+      name: postgres
+      ports:
+      - containerPort: 5432
+        name: order-postgres
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/lib/postgresql/data
+        name: postgredb
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-vll42
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: vr17238.billcorp.local
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - emptyDir: {}
+      name: postgredb
+    - name: kube-api-access-vll42
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-21T11:28:18Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-26T10:04:29Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-26T10:04:29Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-21T11:28:18Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: docker://37fe85e8abcf5c6bbcfca612af630d66c98a1e908ae593794cd2b009e12f3ece
+      image: postgres:9.5
+      imageID: docker-pullable://postgres@sha256:75ebf479151a8fd77bf2fed46ef76ce8d518c23264734c48f2d1de42b4eb40ae
+      lastState:
+        terminated:
+          containerID: docker://6b7c8fe8f57337ed09f82988786dea965a78daa40231dc6538d64b3b78d9e7b2
+          exitCode: 0
+          finishedAt: "2021-07-25T12:06:01Z"
+          reason: Completed
+          startedAt: "2021-07-25T04:56:19Z"
+      name: postgres
+      ready: true
+      restartCount: 4
+      started: true
+      state:
+        running:
+          startedAt: "2021-07-26T10:04:27Z"
+    hostIP: 103.142.174.171
+    phase: Running
+    podIP: 10.32.0.11
+    podIPs:
+    - ip: 10.32.0.11
+    qosClass: BestEffort
+    startTime: "2021-07-21T11:28:18Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2021-07-21T11:16:22Z"
+    generateName: payment-784d9f88c7-
+    labels:
+      app: acmefit
+      pod-template-hash: 784d9f88c7
+      service: payment
+    name: payment-784d9f88c7-n2w7z
+    namespace: acam-fitness
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: payment-784d9f88c7
+      uid: 818863f2-b400-4b36-913b-029959edd8d5
+    resourceVersion: "1386330"
+    uid: 3b339f6b-2083-48b7-9308-bfcb07f2f3c6
+  spec:
+    containers:
+    - env:
+      - name: PAYMENT_PORT
+        value: "9000"
+      - name: USERS_HOST
+        value: users
+      - name: USERS_PORT
+        value: "8083"
+      - name: JAEGER_AGENT_HOST
+        value: localhost
+      - name: JAEGER_AGENT_PORT
+        value: "6832"
+      image: gcr.io/vmwarecloudadvocacy/acmeshop-payment:latest
+      imagePullPolicy: Always
+      name: payment
+      ports:
+      - containerPort: 9000
+        name: payment
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-zg7bc
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: vr17238.billcorp.local
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-zg7bc
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-21T11:16:23Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-26T10:04:32Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-26T10:04:32Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-21T11:16:23Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: docker://400187df5271f4e1de4110ffa129158c74f459f7505ad67d0361e6ed21e83a36
+      image: gcr.io/vmwarecloudadvocacy/acmeshop-payment:latest
+      imageID: docker-pullable://gcr.io/vmwarecloudadvocacy/acmeshop-payment@sha256:2d4b798b3e0651cadb00c2568fec841f4008bfd5ac976a0c0e8553e4923ef70c
+      lastState:
+        terminated:
+          containerID: docker://c460698df602543b00c8ae2f2c73d46bb6db7d8d1021c48ff6567e260975f619
+          exitCode: 0
+          finishedAt: "2021-07-25T12:06:01Z"
+          reason: Completed
+          startedAt: "2021-07-25T04:56:20Z"
+      name: payment
+      ready: true
+      restartCount: 4
+      started: true
+      state:
+        running:
+          startedAt: "2021-07-26T10:04:30Z"
+    hostIP: 103.142.174.171
+    phase: Running
+    podIP: 10.32.0.12
+    podIPs:
+    - ip: 10.32.0.12
+    qosClass: BestEffort
+    startTime: "2021-07-21T11:16:23Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2021-07-21T11:59:58Z"
+    generateName: users-775c8cc754-
+    labels:
+      app: acmefit
+      pod-template-hash: 775c8cc754
+      service: users
+    name: users-775c8cc754-bm5zx
+    namespace: acam-fitness
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: users-775c8cc754
+      uid: 09cfcb19-4e7f-40fa-a377-5b0a48430eb2
+    resourceVersion: "1386375"
+    uid: bae1cb3b-9fa5-4aa6-b4ec-f9214d2f08f6
+  spec:
+    containers:
+    - env:
+      - name: USERS_DB_HOST
+        value: users-mongo
+      - name: USERS_DB_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: password
+            name: users-mongo-pass
+      - name: USERS_DB_PORT
+        value: "27017"
+      - name: USERS_DB_USERNAME
+        value: mongoadmin
+      - name: USERS_PORT
+        value: "8083"
+      - name: REDIS_HOST
+        value: users-redis
+      - name: REDIS_PORT
+        value: "6379"
+      - name: REDIS_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: password
+            name: users-redis-pass
+      - name: JAEGER_AGENT_HOST
+        value: localhost
+      - name: JAEGER_AGENT_PORT
+        value: "6831"
+      image: gcr.io/vmwarecloudadvocacy/acmeshop-user:latest
+      imagePullPolicy: Always
+      name: users
+      ports:
+      - containerPort: 8083
+        name: users
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /data
+        name: acmefit-users-data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-kvtw4
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: vr17238.billcorp.local
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - emptyDir: {}
+      name: acmefit-users-data
+    - name: kube-api-access-kvtw4
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-21T11:59:59Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-26T10:04:43Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-26T10:04:43Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-21T11:59:59Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: docker://1c7a1db9ad37d92e1eecde41bc3985d8583972d99f5d5f67edddf337e07e2d6e
+      image: gcr.io/vmwarecloudadvocacy/acmeshop-user:latest
+      imageID: docker-pullable://gcr.io/vmwarecloudadvocacy/acmeshop-user@sha256:dc95f357f226415aced988a213fb5c1e45e1a6d202e38e2951a4618e14222dc2
+      lastState:
+        terminated:
+          containerID: docker://933efc5f8609c64bbe000e3567906ddd74a61dd33111a41a400d1505294fe4e7
+          exitCode: 137
+          finishedAt: "2021-07-25T12:06:11Z"
+          reason: Error
+          startedAt: "2021-07-25T04:56:22Z"
+      name: users
+      ready: true
+      restartCount: 4
+      started: true
+      state:
+        running:
+          startedAt: "2021-07-26T10:04:41Z"
+    hostIP: 103.142.174.171
+    phase: Running
+    podIP: 10.32.0.17
+    podIPs:
+    - ip: 10.32.0.17
+    qosClass: BestEffort
+    startTime: "2021-07-21T11:59:59Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2021-07-21T11:47:48Z"
+    generateName: users-mongo-c46664f69-
+    labels:
+      app: acmefit
+      pod-template-hash: c46664f69
+      service: users-mongo
+    name: users-mongo-c46664f69-c4682
+    namespace: acam-fitness
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: users-mongo-c46664f69
+      uid: 0eed252e-ad80-4c15-a427-09125e53c1b5
+    resourceVersion: "1386155"
+    uid: 1d653a05-02f8-4eb4-afc6-0df8f5d52084
+  spec:
+    containers:
+    - env:
+      - name: MONGO_INITDB_ROOT_USERNAME
+        value: mongoadmin
+      - name: MONGO_INITDB_DATABASE
+        value: acmefit
+      - name: MONGO_INITDB_ROOT_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: password
+            name: users-mongo-pass
+      image: mongo:4
+      imagePullPolicy: IfNotPresent
+      name: users-mongo
+      ports:
+      - containerPort: 27017
+        name: users-mongo
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /data/db
+        name: mongodata
+      - mountPath: /docker-entrypoint-initdb.d
+        name: mongo-initdb
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-78vb2
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: vr17238.billcorp.local
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - emptyDir: {}
+      name: mongodata
+    - configMap:
+        defaultMode: 420
+        name: users-initdb-config
+      name: mongo-initdb
+    - name: kube-api-access-78vb2
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-21T11:47:48Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-26T10:04:05Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-26T10:04:05Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-21T11:47:48Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: docker://06e4ca5290500ce7addc75c6e17172b74adcff3907b431fadb7755839b57e70c
+      image: mongo:4
+      imageID: docker-pullable://mongo@sha256:e83749c0a1c6ae549471483e610e1b96a21f352a40597405039f53b41afab139
+      lastState:
+        terminated:
+          containerID: docker://fd4988bd5ad2cc3c9366f65a9af84b81659069a9943c5d44d2a371b8c9032569
+          exitCode: 0
+          finishedAt: "2021-07-25T12:06:00Z"
+          reason: Completed
+          startedAt: "2021-07-25T04:55:52Z"
+      name: users-mongo
+      ready: true
+      restartCount: 4
+      started: true
+      state:
+        running:
+          startedAt: "2021-07-26T10:03:54Z"
+    hostIP: 103.142.174.171
+    phase: Running
+    podIP: 10.32.0.8
+    podIPs:
+    - ip: 10.32.0.8
+    qosClass: BestEffort
+    startTime: "2021-07-21T11:47:48Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2021-07-21T11:48:09Z"
+    generateName: users-redis-cdd796598-
+    labels:
+      app: acmefit
+      pod-template-hash: cdd796598
+      service: users-redis
+    name: users-redis-cdd796598-ttx2m
+    namespace: acam-fitness
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: users-redis-cdd796598
+      uid: a7cb4921-bea6-444d-a061-aafb7283822f
+    resourceVersion: "1386282"
+    uid: 309e7dea-77bc-4894-b277-2db66dbc5ad3
+  spec:
+    containers:
+    - env:
+      - name: REDIS_HOST
+        value: users-redis
+      - name: REDIS_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: password
+            name: users-redis-pass
+      image: bitnami/redis
+      imagePullPolicy: Always
+      name: users-redis
+      ports:
+      - containerPort: 6379
+        name: redis
+        protocol: TCP
+      resources:
+        requests:
+          cpu: 100m
+          memory: 100Mi
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/lib/redis
+        name: users-redis-data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-cnznj
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: vr17238.billcorp.local
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - emptyDir: {}
+      name: users-redis-data
+    - name: kube-api-access-cnznj
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-21T11:50:36Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-26T10:04:22Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-26T10:04:22Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2021-07-21T11:50:35Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: docker://fede9883e6f773c6895c87a7a2bae9f47e7d6ec5b60aad0ae5ac654b05b74f1d
+      image: bitnami/redis:latest
+      imageID: docker-pullable://bitnami/redis@sha256:58d5347f6dd2740a1e04098c8436f9f4a07b522bbc7f47941b8a5da0cc5eeca6
+      lastState:
+        terminated:
+          containerID: docker://b0b6860794c5db7c7d3dfadfab79a4dd827e012405d5cb2f80ba87c66a071e01
+          exitCode: 0
+          finishedAt: "2021-07-25T12:06:00Z"
+          reason: Completed
+          startedAt: "2021-07-25T04:56:28Z"
+      name: users-redis
+      ready: true
+      restartCount: 4
+      started: true
+      state:
+        running:
+          startedAt: "2021-07-26T10:04:22Z"
+    hostIP: 103.142.174.171
+    phase: Running
+    podIP: 10.32.0.9
+    podIPs:
+    - ip: 10.32.0.9
+    qosClass: Burstable
+    startTime: "2021-07-21T11:50:36Z"
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"acmefit","service":"cart"},"name":"cart","namespace":"acam-fitness"},"spec":{"ports":[{"name":"http-cart","port":5000,"protocol":"TCP"}],"selector":{"app":"acmefit","service":"cart"}}}
+    creationTimestamp: "2021-07-21T11:54:05Z"
+    labels:
+      app: acmefit
+      service: cart
+    name: cart
+    namespace: acam-fitness
+    resourceVersion: "1276569"
+    uid: e65e81d5-7a0b-4a15-a568-e232356a499e
+  spec:
+    clusterIP: 10.109.204.188
+    clusterIPs:
+    - 10.109.204.188
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-cart
+      port: 5000
+      protocol: TCP
+      targetPort: 5000
+    selector:
+      app: acmefit
+      service: cart
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"acmefit","service":"cart-redis"},"name":"cart-redis","namespace":"acam-fitness"},"spec":{"ports":[{"name":"redis-cart","port":6379}],"selector":{"app":"acmefit","service":"cart-redis"}}}
+    creationTimestamp: "2021-07-21T11:51:59Z"
+    labels:
+      app: acmefit
+      service: cart-redis
+    name: cart-redis
+    namespace: acam-fitness
+    resourceVersion: "1276311"
+    uid: ca06b925-a6ec-474c-9323-bec92098ad9c
+  spec:
+    clusterIP: 10.104.132.52
+    clusterIPs:
+    - 10.104.132.52
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: redis-cart
+      port: 6379
+      protocol: TCP
+      targetPort: 6379
+    selector:
+      app: acmefit
+      service: cart-redis
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"acmefit","service":"catalog"},"name":"catalog","namespace":"acam-fitness"},"spec":{"ports":[{"name":"http-catalog","port":8082,"protocol":"TCP"}],"selector":{"app":"acmefit","service":"catalog"}}}
+    creationTimestamp: "2021-07-21T11:14:39Z"
+    labels:
+      app: acmefit
+      service: catalog
+    name: catalog
+    namespace: acam-fitness
+    resourceVersion: "1272495"
+    uid: 80b04fff-4ea5-4ca6-b3a9-aa89d638b177
+  spec:
+    clusterIP: 10.111.203.206
+    clusterIPs:
+    - 10.111.203.206
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-catalog
+      port: 8082
+      protocol: TCP
+      targetPort: 8082
+    selector:
+      app: acmefit
+      service: catalog
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"acmefit","service":"catalog-db"},"name":"catalog-mongo","namespace":"acam-fitness"},"spec":{"ports":[{"name":"mongo-catalog","port":27017,"protocol":"TCP"}],"selector":{"app":"acmefit","service":"catalog-db"}}}
+    creationTimestamp: "2021-07-21T11:11:51Z"
+    labels:
+      app: acmefit
+      service: catalog-db
+    name: catalog-mongo
+    namespace: acam-fitness
+    resourceVersion: "1272199"
+    uid: bd5def1d-3eb5-47cb-a42d-ba9d4e9430cb
+  spec:
+    clusterIP: 10.109.129.133
+    clusterIPs:
+    - 10.109.129.133
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: mongo-catalog
+      port: 27017
+      protocol: TCP
+      targetPort: 27017
+    selector:
+      app: acmefit
+      service: catalog-db
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"acmefit","service":"frontend"},"name":"frontend","namespace":"acam-fitness"},"spec":{"externalIPs":["103.142.174.171"],"ports":[{"name":"http-frontend","port":8090,"protocol":"TCP","targetPort":3000}],"selector":{"app":"acmefit","service":"frontend"},"type":"NodePort"}}
+    creationTimestamp: "2021-07-21T12:09:57Z"
+    labels:
+      app: acmefit
+      service: frontend
+    name: frontend
+    namespace: acam-fitness
+    resourceVersion: "1278227"
+    uid: 5579e304-e73a-455b-b564-3c72b9f221d1
+  spec:
+    clusterIP: 10.102.173.107
+    clusterIPs:
+    - 10.102.173.107
+    externalIPs:
+    - 103.142.174.171
+    externalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-frontend
+      nodePort: 31591
+      port: 8090
+      protocol: TCP
+      targetPort: 3000
+    selector:
+      app: acmefit
+      service: frontend
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"acmefit","service":"order"},"name":"order","namespace":"acam-fitness"},"spec":{"ports":[{"name":"http-order","port":6000,"protocol":"TCP"}],"selector":{"app":"acmefit","service":"order"}}}
+    creationTimestamp: "2021-07-21T11:41:28Z"
+    labels:
+      app: acmefit
+      service: order
+    name: order
+    namespace: acam-fitness
+    resourceVersion: "1275184"
+    uid: 2ffa77ff-66dc-4d60-afa7-3860b59f8b51
+  spec:
+    clusterIP: 10.107.168.130
+    clusterIPs:
+    - 10.107.168.130
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-order
+      port: 6000
+      protocol: TCP
+      targetPort: 6000
+    selector:
+      app: acmefit
+      service: order
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"acmefit","service":"order-db"},"name":"order-postgres","namespace":"acam-fitness"},"spec":{"ports":[{"name":"postgres-order","port":5432,"protocol":"TCP"}],"selector":{"app":"acmefit","service":"order-db"}}}
+    creationTimestamp: "2021-07-21T11:28:18Z"
+    labels:
+      app: acmefit
+      service: order-db
+    name: order-postgres
+    namespace: acam-fitness
+    resourceVersion: "1273883"
+    uid: 5cc44d23-6847-4756-8589-094e0299588c
+  spec:
+    clusterIP: 10.106.252.110
+    clusterIPs:
+    - 10.106.252.110
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: postgres-order
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
+    selector:
+      app: acmefit
+      service: order-db
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"acmefit","service":"payment"},"name":"payment","namespace":"acam-fitness"},"spec":{"ports":[{"name":"http-payment","port":9000,"protocol":"TCP"}],"selector":{"app":"acmefit","service":"payment"}}}
+    creationTimestamp: "2021-07-21T11:16:22Z"
+    labels:
+      app: acmefit
+      service: payment
+    name: payment
+    namespace: acam-fitness
+    resourceVersion: "1272693"
+    uid: db4490a6-b285-4e62-9724-7b2fab586f9b
+  spec:
+    clusterIP: 10.104.104.180
+    clusterIPs:
+    - 10.104.104.180
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-payment
+      port: 9000
+      protocol: TCP
+      targetPort: 9000
+    selector:
+      app: acmefit
+      service: payment
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"acmefit","service":"users"},"name":"users","namespace":"acam-fitness"},"spec":{"ports":[{"name":"http-users","port":8083,"protocol":"TCP"}],"selector":{"app":"acmefit","service":"users"}}}
+    creationTimestamp: "2021-07-21T11:59:58Z"
+    labels:
+      app: acmefit
+      service: users
+    name: users
+    namespace: acam-fitness
+    resourceVersion: "1277230"
+    uid: 0c4dd6f2-6877-4a43-b3f5-54723ea2c78e
+  spec:
+    clusterIP: 10.96.223.210
+    clusterIPs:
+    - 10.96.223.210
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-users
+      port: 8083
+      protocol: TCP
+      targetPort: 8083
+    selector:
+      app: acmefit
+      service: users
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"acmefit","service":"users-mongo"},"name":"users-mongo","namespace":"acam-fitness"},"spec":{"ports":[{"name":"mongo-users","port":27017,"protocol":"TCP"}],"selector":{"app":"acmefit","service":"users-mongo"}}}
+    creationTimestamp: "2021-07-21T11:47:47Z"
+    labels:
+      app: acmefit
+      service: users-mongo
+    name: users-mongo
+    namespace: acam-fitness
+    resourceVersion: "1275824"
+    uid: e7ffc848-c571-4ec1-aada-49f997ce0911
+  spec:
+    clusterIP: 10.111.101.79
+    clusterIPs:
+    - 10.111.101.79
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: mongo-users
+      port: 27017
+      protocol: TCP
+      targetPort: 27017
+    selector:
+      app: acmefit
+      service: users-mongo
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"acmefit","service":"users-redis"},"name":"users-redis","namespace":"acam-fitness"},"spec":{"ports":[{"name":"redis-users","port":6379}],"selector":{"app":"acmefit","service":"users-redis"}}}
+    creationTimestamp: "2021-07-21T11:48:09Z"
+    labels:
+      app: acmefit
+      service: users-redis
+    name: users-redis
+    namespace: acam-fitness
+    resourceVersion: "1275885"
+    uid: 9ef74110-6bea-4ddc-abf8-190d5db7a2d4
+  spec:
+    clusterIP: 10.106.229.213
+    clusterIPs:
+    - 10.106.229.213
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: redis-users
+      port: 6379
+      protocol: TCP
+      targetPort: 6379
+    selector:
+      app: acmefit
+      service: users-redis
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"acmefit","service":"cart"},"name":"cart","namespace":"acam-fitness"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"acmefit","service":"cart"}},"strategy":{"type":"Recreate"},"template":{"metadata":{"labels":{"app":"acmefit","service":"cart"}},"spec":{"containers":[{"env":[{"name":"REDIS_HOST","value":"cart-redis"},{"name":"REDIS_PASSWORD","valueFrom":{"secretKeyRef":{"key":"password","name":"cart-redis-pass"}}},{"name":"REDIS_PORT","value":"6379"},{"name":"CART_PORT","value":"5000"},{"name":"USER_HOST","value":"users"},{"name":"USER_PORT","value":"8083"},{"name":"JAEGER_AGENT_HOST","value":"localhost"},{"name":"JAEGER_AGENT_PORT","value":"6831"},{"name":"AUTH_MODE","value":"1"}],"image":"gcr.io/vmwarecloudadvocacy/acmeshop-cart:latest","imagePullPolicy":"Always","name":"cart","ports":[{"containerPort":5000,"name":"cart"}],"resources":{"limits":{"cpu":"500m","memory":"256Mi"},"requests":{"cpu":"100m","memory":"64Mi"}},"volumeMounts":[{"mountPath":"/data","name":"acmefit-cart-data"}]}],"volumes":[{"emptyDir":{},"name":"acmefit-cart-data"}]}}}}
+    creationTimestamp: "2021-07-21T11:54:05Z"
+    generation: 5
+    labels:
+      app: acmefit
+      service: cart
+    name: cart
+    namespace: acam-fitness
+    resourceVersion: "1386342"
+    uid: be665131-3e0e-4202-822e-158b63feff2b
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: acmefit
+        service: cart
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: acmefit
+          service: cart
+      spec:
+        containers:
+        - env:
+          - name: REDIS_HOST
+            value: cart-redis
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: cart-redis-pass
+          - name: REDIS_PORT
+            value: "6379"
+          - name: CART_PORT
+            value: "5000"
+          - name: USER_HOST
+            value: users
+          - name: USER_PORT
+            value: "8083"
+          - name: JAEGER_AGENT_HOST
+            value: localhost
+          - name: JAEGER_AGENT_PORT
+            value: "6831"
+          - name: AUTH_MODE
+            value: "1"
+          image: gcr.io/vmwarecloudadvocacy/acmeshop-cart:latest
+          imagePullPolicy: Always
+          name: cart
+          ports:
+          - containerPort: 5000
+            name: cart
+            protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 64Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data
+            name: acmefit-cart-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: acmefit-cart-data
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2021-07-21T11:54:05Z"
+      lastUpdateTime: "2021-07-21T11:54:11Z"
+      message: ReplicaSet "cart-65ddcdb87d" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-07-26T10:04:34Z"
+      lastUpdateTime: "2021-07-26T10:04:34Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 5
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"acmefit","service":"cart-redis","version":"1.0.0"},"name":"cart-redis","namespace":"acam-fitness"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"acmefit","service":"cart-redis"}},"template":{"metadata":{"labels":{"app":"acmefit","service":"cart-redis"}},"spec":{"containers":[{"env":[{"name":"REDIS_HOST","value":"cart-redis"},{"name":"REDIS_PASSWORD","valueFrom":{"secretKeyRef":{"key":"password","name":"cart-redis-pass"}}}],"image":"bitnami/redis","imagePullPolicy":"Always","name":"cart-redis","ports":[{"containerPort":6379,"name":"redis","protocol":"TCP"}],"resources":{"requests":{"cpu":"100m","memory":"100Mi"}},"volumeMounts":[{"mountPath":"/var/lib/redis","name":"cart-redis-data"}]}],"volumes":[{"emptyDir":{},"name":"cart-redis-data"}]}}}}
+    creationTimestamp: "2021-07-21T11:51:59Z"
+    generation: 1
+    labels:
+      app: acmefit
+      service: cart-redis
+      version: 1.0.0
+    name: cart-redis
+    namespace: acam-fitness
+    resourceVersion: "1386244"
+    uid: 0c8d640b-60c7-4e8b-9e84-c2f69fe69fa3
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: acmefit
+        service: cart-redis
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: acmefit
+          service: cart-redis
+      spec:
+        containers:
+        - env:
+          - name: REDIS_HOST
+            value: cart-redis
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: cart-redis-pass
+          image: bitnami/redis
+          imagePullPolicy: Always
+          name: cart-redis
+          ports:
+          - containerPort: 6379
+            name: redis
+            protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/redis
+            name: cart-redis-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: cart-redis-data
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2021-07-21T11:51:59Z"
+      lastUpdateTime: "2021-07-21T11:53:34Z"
+      message: ReplicaSet "cart-redis-69d757ddbd" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-07-26T10:04:17Z"
+      lastUpdateTime: "2021-07-26T10:04:17Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"acmefit","service":"catalog"},"name":"catalog","namespace":"acam-fitness"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"acmefit","service":"catalog"}},"strategy":{"type":"Recreate"},"template":{"metadata":{"labels":{"app":"acmefit","service":"catalog"}},"spec":{"containers":[{"env":[{"name":"CATALOG_DB_HOST","value":"catalog-mongo"},{"name":"CATALOG_DB_PASSWORD","valueFrom":{"secretKeyRef":{"key":"password","name":"catalog-mongo-pass"}}},{"name":"CATALOG_DB_PORT","value":"27017"},{"name":"CATALOG_DB_USERNAME","value":"mongoadmin"},{"name":"CATALOG_PORT","value":"8082"},{"name":"CATALOG_VERSION","value":"v1"},{"name":"USERS_HOST","value":"users"},{"name":"USERS_PORT","value":"8083"},{"name":"JAEGER_AGENT_HOST","value":"localhost"},{"name":"JAEGER_AGENT_PORT","value":"6831"}],"image":"gcr.io/vmwarecloudadvocacy/acmeshop-catalog:latest","imagePullPolicy":"Always","name":"catalog","ports":[{"containerPort":8082,"name":"catalog"}],"volumeMounts":[{"mountPath":"/data","name":"acmefit-catalog-data"}]}],"volumes":[{"emptyDir":{},"name":"acmefit-catalog-data"}]}}}}
+    creationTimestamp: "2021-07-21T11:14:40Z"
+    generation: 1
+    labels:
+      app: acmefit
+      service: catalog
+    name: catalog
+    namespace: acam-fitness
+    resourceVersion: "1386274"
+    uid: e2b6045a-e54e-4665-8393-53aa3447cf0d
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: acmefit
+        service: catalog
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: acmefit
+          service: catalog
+      spec:
+        containers:
+        - env:
+          - name: CATALOG_DB_HOST
+            value: catalog-mongo
+          - name: CATALOG_DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: catalog-mongo-pass
+          - name: CATALOG_DB_PORT
+            value: "27017"
+          - name: CATALOG_DB_USERNAME
+            value: mongoadmin
+          - name: CATALOG_PORT
+            value: "8082"
+          - name: CATALOG_VERSION
+            value: v1
+          - name: USERS_HOST
+            value: users
+          - name: USERS_PORT
+            value: "8083"
+          - name: JAEGER_AGENT_HOST
+            value: localhost
+          - name: JAEGER_AGENT_PORT
+            value: "6831"
+          image: gcr.io/vmwarecloudadvocacy/acmeshop-catalog:latest
+          imagePullPolicy: Always
+          name: catalog
+          ports:
+          - containerPort: 8082
+            name: catalog
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data
+            name: acmefit-catalog-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: acmefit-catalog-data
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2021-07-21T11:14:40Z"
+      lastUpdateTime: "2021-07-21T11:15:41Z"
+      message: ReplicaSet "catalog-669b56bc8d" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-07-26T10:04:21Z"
+      lastUpdateTime: "2021-07-26T10:04:21Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"acmefit","service":"catalog-db"},"name":"catalog-mongo","namespace":"acam-fitness"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"acmefit","service":"catalog-db"}},"template":{"metadata":{"labels":{"app":"acmefit","service":"catalog-db"}},"spec":{"containers":[{"env":[{"name":"MONGO_INITDB_ROOT_USERNAME","value":"mongoadmin"},{"name":"MONGO_INITDB_DATABASE","value":"acmefit"},{"name":"MONGO_INITDB_ROOT_PASSWORD","valueFrom":{"secretKeyRef":{"key":"password","name":"catalog-mongo-pass"}}}],"image":"mongo:4","name":"catalog-mongo","ports":[{"containerPort":27017,"name":"catalog-mongo","protocol":"TCP"}],"volumeMounts":[{"mountPath":"/data/db","name":"mongodata"},{"mountPath":"/docker-entrypoint-initdb.d","name":"mongo-initdb"}]}],"volumes":[{"emptyDir":{},"name":"mongodata"},{"configMap":{"name":"catalog-initdb-config"},"name":"mongo-initdb"}]}}}}
+    creationTimestamp: "2021-07-21T11:11:51Z"
+    generation: 1
+    labels:
+      app: acmefit
+      service: catalog-db
+    name: catalog-mongo
+    namespace: acam-fitness
+    resourceVersion: "1344358"
+    uid: 0c374fb3-a616-4a4a-92aa-bbdd915384b9
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: acmefit
+        service: catalog-db
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: acmefit
+          service: catalog-db
+      spec:
+        containers:
+        - env:
+          - name: MONGO_INITDB_ROOT_USERNAME
+            value: mongoadmin
+          - name: MONGO_INITDB_DATABASE
+            value: acmefit
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: catalog-mongo-pass
+          image: mongo:4
+          imagePullPolicy: IfNotPresent
+          name: catalog-mongo
+          ports:
+          - containerPort: 27017
+            name: catalog-mongo
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data/db
+            name: mongodata
+          - mountPath: /docker-entrypoint-initdb.d
+            name: mongo-initdb
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: mongodata
+        - configMap:
+            defaultMode: 420
+            name: catalog-initdb-config
+          name: mongo-initdb
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2021-07-21T11:11:51Z"
+      lastUpdateTime: "2021-07-21T11:12:47Z"
+      message: ReplicaSet "catalog-mongo-857649f774" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-07-25T04:56:04Z"
+      lastUpdateTime: "2021-07-25T04:56:04Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"acmefit","service":"frontend"},"name":"frontend","namespace":"acam-fitness"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"acmefit","service":"frontend"}},"strategy":{"type":"Recreate"},"template":{"metadata":{"labels":{"app":"acmefit","service":"frontend"}},"spec":{"containers":[{"env":[{"name":"FRONTEND_PORT","value":"3000"},{"name":"USERS_HOST","value":"users"},{"name":"CATALOG_HOST","value":"catalog"},{"name":"ORDER_HOST","value":"order"},{"name":"CART_HOST","value":"cart"},{"name":"USERS_PORT","value":"8083"},{"name":"CATALOG_PORT","value":"8082"},{"name":"CART_PORT","value":"5000"},{"name":"ORDER_PORT","value":"6000"},{"name":"JAEGER_AGENT_HOST","value":"localhost"},{"name":"JAEGER_AGENT_PORT","value":"6832"}],"image":"gcr.io/vmwarecloudadvocacy/acmeshop-front-end:latest","name":"frontend","ports":[{"containerPort":3000,"name":"frontend"}]}]}}}}
+    creationTimestamp: "2021-07-21T12:09:57Z"
+    generation: 1
+    labels:
+      app: acmefit
+      service: frontend
+    name: frontend
+    namespace: acam-fitness
+    resourceVersion: "1386196"
+    uid: fe44b450-b7a4-4e40-890f-0bd4ae032970
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: acmefit
+        service: frontend
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: acmefit
+          service: frontend
+      spec:
+        containers:
+        - env:
+          - name: FRONTEND_PORT
+            value: "3000"
+          - name: USERS_HOST
+            value: users
+          - name: CATALOG_HOST
+            value: catalog
+          - name: ORDER_HOST
+            value: order
+          - name: CART_HOST
+            value: cart
+          - name: USERS_PORT
+            value: "8083"
+          - name: CATALOG_PORT
+            value: "8082"
+          - name: CART_PORT
+            value: "5000"
+          - name: ORDER_PORT
+            value: "6000"
+          - name: JAEGER_AGENT_HOST
+            value: localhost
+          - name: JAEGER_AGENT_PORT
+            value: "6832"
+          image: gcr.io/vmwarecloudadvocacy/acmeshop-front-end:latest
+          imagePullPolicy: Always
+          name: frontend
+          ports:
+          - containerPort: 3000
+            name: frontend
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2021-07-21T12:09:57Z"
+      lastUpdateTime: "2021-07-21T12:10:02Z"
+      message: ReplicaSet "frontend-86c5ffb485" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-07-26T10:04:11Z"
+      lastUpdateTime: "2021-07-26T10:04:11Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"acmefit","service":"order"},"name":"order","namespace":"acam-fitness"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"acmefit","service":"order"}},"strategy":{"type":"Recreate"},"template":{"metadata":{"labels":{"app":"acmefit","service":"order"}},"spec":{"containers":[{"env":[{"name":"ORDER_DB_HOST","value":"order-postgres"},{"name":"ORDER_DB_PASSWORD","valueFrom":{"secretKeyRef":{"key":"password","name":"order-postgres-pass"}}},{"name":"ORDER_DB_PORT","value":"5432"},{"name":"AUTH_MODE","value":"1"},{"name":"ORDER_DB_USERNAME","value":"pgbench"},{"name":"PGPASSWORD","valueFrom":{"secretKeyRef":{"key":"password","name":"order-postgres-pass"}}},{"name":"ORDER_AUTH_DB","value":"postgres"},{"name":"ORDER_PORT","value":"6000"},{"name":"PAYMENT_PORT","value":"9000"},{"name":"PAYMENT_HOST","value":"payment"},{"name":"USER_HOST","value":"users"},{"name":"USER_PORT","value":"8083"},{"name":"JAEGER_AGENT_HOST","value":"localhost"},{"name":"JAEGER_AGENT_PORT","value":"6831"}],"image":"gcr.io/vmwarecloudadvocacy/acmeshop-order:latest","name":"order","ports":[{"containerPort":6000,"name":"order"}],"resources":{"limits":{"cpu":"500m","memory":"256Mi"},"requests":{"cpu":"100m","memory":"64Mi"}},"volumeMounts":[{"mountPath":"/data","name":"acmefit-order-data"}]}],"volumes":[{"emptyDir":{},"name":"acmefit-order-data"}]}}}}
+    creationTimestamp: "2021-07-21T11:41:29Z"
+    generation: 1
+    labels:
+      app: acmefit
+      service: order
+    name: order
+    namespace: acam-fitness
+    resourceVersion: "1386357"
+    uid: d8458a03-d5b2-4218-b508-22fb64a33854
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: acmefit
+        service: order
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: acmefit
+          service: order
+      spec:
+        containers:
+        - env:
+          - name: ORDER_DB_HOST
+            value: order-postgres
+          - name: ORDER_DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: order-postgres-pass
+          - name: ORDER_DB_PORT
+            value: "5432"
+          - name: AUTH_MODE
+            value: "1"
+          - name: ORDER_DB_USERNAME
+            value: pgbench
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: order-postgres-pass
+          - name: ORDER_AUTH_DB
+            value: postgres
+          - name: ORDER_PORT
+            value: "6000"
+          - name: PAYMENT_PORT
+            value: "9000"
+          - name: PAYMENT_HOST
+            value: payment
+          - name: USER_HOST
+            value: users
+          - name: USER_PORT
+            value: "8083"
+          - name: JAEGER_AGENT_HOST
+            value: localhost
+          - name: JAEGER_AGENT_PORT
+            value: "6831"
+          image: gcr.io/vmwarecloudadvocacy/acmeshop-order:latest
+          imagePullPolicy: Always
+          name: order
+          ports:
+          - containerPort: 6000
+            name: order
+            protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 64Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data
+            name: acmefit-order-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: acmefit-order-data
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2021-07-21T11:51:39Z"
+      lastUpdateTime: "2021-07-21T11:51:39Z"
+      message: ReplicaSet "order-5ccf744dd4" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-07-26T10:04:36Z"
+      lastUpdateTime: "2021-07-26T10:04:36Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"acmefit","service":"order-db"},"name":"order-postgres","namespace":"acam-fitness"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"acmefit","service":"order-db"}},"strategy":{"rollingUpdate":{"maxSurge":1,"maxUnavailable":1},"type":"RollingUpdate"},"template":{"metadata":{"labels":{"app":"acmefit","service":"order-db"}},"spec":{"containers":[{"env":[{"name":"POSTGRES_USER","value":"pgbench"},{"name":"POSTGRES_PASSWORD","valueFrom":{"secretKeyRef":{"key":"password","name":"order-postgres-pass"}}},{"name":"PGBENCH_PASSWORD","valueFrom":{"secretKeyRef":{"key":"password","name":"order-postgres-pass"}}},{"name":"PGDATA","value":"/var/lib/postgresql/data/pgdata"}],"image":"postgres:9.5","imagePullPolicy":"Always","name":"postgres","ports":[{"containerPort":5432,"name":"order-postgres","protocol":"TCP"}],"volumeMounts":[{"mountPath":"/var/lib/postgresql/data","name":"postgredb"}]}],"volumes":[{"emptyDir":{},"name":"postgredb"}]}}}}
+    creationTimestamp: "2021-07-21T11:28:18Z"
+    generation: 1
+    labels:
+      app: acmefit
+      service: order-db
+    name: order-postgres
+    namespace: acam-fitness
+    resourceVersion: "1386312"
+    uid: 4b8295e9-a711-48dc-814c-4dfd773579af
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: acmefit
+        service: order-db
+    strategy:
+      rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 1
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: acmefit
+          service: order-db
+      spec:
+        containers:
+        - env:
+          - name: POSTGRES_USER
+            value: pgbench
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: order-postgres-pass
+          - name: PGBENCH_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: order-postgres-pass
+          - name: PGDATA
+            value: /var/lib/postgresql/data/pgdata
+          image: postgres:9.5
+          imagePullPolicy: Always
+          name: postgres
+          ports:
+          - containerPort: 5432
+            name: order-postgres
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: postgredb
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: postgredb
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2021-07-21T11:28:18Z"
+      lastUpdateTime: "2021-07-21T11:28:18Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2021-07-21T11:28:18Z"
+      lastUpdateTime: "2021-07-21T11:28:54Z"
+      message: ReplicaSet "order-postgres-6cdb48cc6b" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"acmefit","service":"payment"},"name":"payment","namespace":"acam-fitness"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"acmefit","service":"payment"}},"strategy":{"type":"Recreate"},"template":{"metadata":{"labels":{"app":"acmefit","service":"payment"}},"spec":{"containers":[{"env":[{"name":"PAYMENT_PORT","value":"9000"},{"name":"USERS_HOST","value":"users"},{"name":"USERS_PORT","value":"8083"},{"name":"JAEGER_AGENT_HOST","value":"localhost"},{"name":"JAEGER_AGENT_PORT","value":"6832"}],"image":"gcr.io/vmwarecloudadvocacy/acmeshop-payment:latest","name":"payment","ports":[{"containerPort":9000,"name":"payment"}]}]}}}}
+    creationTimestamp: "2021-07-21T11:16:22Z"
+    generation: 1
+    labels:
+      app: acmefit
+      service: payment
+    name: payment
+    namespace: acam-fitness
+    resourceVersion: "1386334"
+    uid: 0d0a43db-446c-4726-9d23-2f3457269cfe
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: acmefit
+        service: payment
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: acmefit
+          service: payment
+      spec:
+        containers:
+        - env:
+          - name: PAYMENT_PORT
+            value: "9000"
+          - name: USERS_HOST
+            value: users
+          - name: USERS_PORT
+            value: "8083"
+          - name: JAEGER_AGENT_HOST
+            value: localhost
+          - name: JAEGER_AGENT_PORT
+            value: "6832"
+          image: gcr.io/vmwarecloudadvocacy/acmeshop-payment:latest
+          imagePullPolicy: Always
+          name: payment
+          ports:
+          - containerPort: 9000
+            name: payment
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2021-07-21T11:16:22Z"
+      lastUpdateTime: "2021-07-21T11:17:36Z"
+      message: ReplicaSet "payment-784d9f88c7" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-07-26T10:04:32Z"
+      lastUpdateTime: "2021-07-26T10:04:32Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"acmefit","service":"users"},"name":"users","namespace":"acam-fitness"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"acmefit","service":"users"}},"strategy":{"type":"Recreate"},"template":{"metadata":{"labels":{"app":"acmefit","service":"users"}},"spec":{"containers":[{"env":[{"name":"USERS_DB_HOST","value":"users-mongo"},{"name":"USERS_DB_PASSWORD","valueFrom":{"secretKeyRef":{"key":"password","name":"users-mongo-pass"}}},{"name":"USERS_DB_PORT","value":"27017"},{"name":"USERS_DB_USERNAME","value":"mongoadmin"},{"name":"USERS_PORT","value":"8083"},{"name":"REDIS_HOST","value":"users-redis"},{"name":"REDIS_PORT","value":"6379"},{"name":"REDIS_PASSWORD","valueFrom":{"secretKeyRef":{"key":"password","name":"users-redis-pass"}}},{"name":"JAEGER_AGENT_HOST","value":"localhost"},{"name":"JAEGER_AGENT_PORT","value":"6831"}],"image":"gcr.io/vmwarecloudadvocacy/acmeshop-user:latest","imagePullPolicy":"Always","name":"users","ports":[{"containerPort":8083,"name":"users"}],"volumeMounts":[{"mountPath":"/data","name":"acmefit-users-data"}]}],"volumes":[{"emptyDir":{},"name":"acmefit-users-data"}]}}}}
+    creationTimestamp: "2021-07-21T11:59:58Z"
+    generation: 1
+    labels:
+      app: acmefit
+      service: users
+    name: users
+    namespace: acam-fitness
+    resourceVersion: "1386380"
+    uid: 6791760c-1a02-41f2-9e4b-b9dd4ea8d75c
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: acmefit
+        service: users
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: acmefit
+          service: users
+      spec:
+        containers:
+        - env:
+          - name: USERS_DB_HOST
+            value: users-mongo
+          - name: USERS_DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: users-mongo-pass
+          - name: USERS_DB_PORT
+            value: "27017"
+          - name: USERS_DB_USERNAME
+            value: mongoadmin
+          - name: USERS_PORT
+            value: "8083"
+          - name: REDIS_HOST
+            value: users-redis
+          - name: REDIS_PORT
+            value: "6379"
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: users-redis-pass
+          - name: JAEGER_AGENT_HOST
+            value: localhost
+          - name: JAEGER_AGENT_PORT
+            value: "6831"
+          image: gcr.io/vmwarecloudadvocacy/acmeshop-user:latest
+          imagePullPolicy: Always
+          name: users
+          ports:
+          - containerPort: 8083
+            name: users
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data
+            name: acmefit-users-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: acmefit-users-data
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2021-07-21T11:59:58Z"
+      lastUpdateTime: "2021-07-21T12:00:55Z"
+      message: ReplicaSet "users-775c8cc754" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-07-26T10:04:43Z"
+      lastUpdateTime: "2021-07-26T10:04:43Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"acmefit","service":"users-mongo"},"name":"users-mongo","namespace":"acam-fitness"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"acmefit","service":"users-mongo"}},"template":{"metadata":{"labels":{"app":"acmefit","service":"users-mongo"}},"spec":{"containers":[{"env":[{"name":"MONGO_INITDB_ROOT_USERNAME","value":"mongoadmin"},{"name":"MONGO_INITDB_DATABASE","value":"acmefit"},{"name":"MONGO_INITDB_ROOT_PASSWORD","valueFrom":{"secretKeyRef":{"key":"password","name":"users-mongo-pass"}}}],"image":"mongo:4","name":"users-mongo","ports":[{"containerPort":27017,"name":"users-mongo","protocol":"TCP"}],"resources":{},"volumeMounts":[{"mountPath":"/data/db","name":"mongodata"},{"mountPath":"/docker-entrypoint-initdb.d","name":"mongo-initdb"}]}],"volumes":[{"emptyDir":{},"name":"mongodata"},{"configMap":{"name":"users-initdb-config"},"name":"mongo-initdb"}]}}}}
+    creationTimestamp: "2021-07-21T11:47:47Z"
+    generation: 1
+    labels:
+      app: acmefit
+      service: users-mongo
+    name: users-mongo
+    namespace: acam-fitness
+    resourceVersion: "1386161"
+    uid: 401fae9b-cd94-4e07-a7cc-492339420d62
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: acmefit
+        service: users-mongo
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: acmefit
+          service: users-mongo
+      spec:
+        containers:
+        - env:
+          - name: MONGO_INITDB_ROOT_USERNAME
+            value: mongoadmin
+          - name: MONGO_INITDB_DATABASE
+            value: acmefit
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: users-mongo-pass
+          image: mongo:4
+          imagePullPolicy: IfNotPresent
+          name: users-mongo
+          ports:
+          - containerPort: 27017
+            name: users-mongo
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data/db
+            name: mongodata
+          - mountPath: /docker-entrypoint-initdb.d
+            name: mongo-initdb
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: mongodata
+        - configMap:
+            defaultMode: 420
+            name: users-initdb-config
+          name: mongo-initdb
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2021-07-21T11:47:47Z"
+      lastUpdateTime: "2021-07-21T11:47:51Z"
+      message: ReplicaSet "users-mongo-c46664f69" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-07-26T10:04:08Z"
+      lastUpdateTime: "2021-07-26T10:04:08Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"acmefit","service":"users-redis"},"name":"users-redis","namespace":"acam-fitness"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"acmefit","service":"users-redis"}},"template":{"metadata":{"labels":{"app":"acmefit","service":"users-redis"}},"spec":{"containers":[{"env":[{"name":"REDIS_HOST","value":"users-redis"},{"name":"REDIS_PASSWORD","valueFrom":{"secretKeyRef":{"key":"password","name":"users-redis-pass"}}}],"image":"bitnami/redis","imagePullPolicy":"Always","name":"users-redis","ports":[{"containerPort":6379,"name":"redis","protocol":"TCP"}],"resources":{"requests":{"cpu":"100m","memory":"100Mi"}},"volumeMounts":[{"mountPath":"/var/lib/redis","name":"users-redis-data"}]}],"volumes":[{"emptyDir":{},"name":"users-redis-data"}]}}}}
+    creationTimestamp: "2021-07-21T11:48:09Z"
+    generation: 1
+    labels:
+      app: acmefit
+      service: users-redis
+    name: users-redis
+    namespace: acam-fitness
+    resourceVersion: "1386286"
+    uid: efb21c3f-f026-43e2-b4a3-203a7b34f282
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: acmefit
+        service: users-redis
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: acmefit
+          service: users-redis
+      spec:
+        containers:
+        - env:
+          - name: REDIS_HOST
+            value: users-redis
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: users-redis-pass
+          image: bitnami/redis
+          imagePullPolicy: Always
+          name: users-redis
+          ports:
+          - containerPort: 6379
+            name: redis
+            protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/redis
+            name: users-redis-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: users-redis-data
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2021-07-21T11:48:09Z"
+      lastUpdateTime: "2021-07-21T11:50:44Z"
+      message: ReplicaSet "users-redis-cdd796598" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-07-26T10:04:22Z"
+      lastUpdateTime: "2021-07-26T10:04:22Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "1"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2021-07-21T11:54:05Z"
+    generation: 5
+    labels:
+      app: acmefit
+      pod-template-hash: 65ddcdb87d
+      service: cart
+    name: cart-65ddcdb87d
+    namespace: acam-fitness
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: cart
+      uid: be665131-3e0e-4202-822e-158b63feff2b
+    resourceVersion: "1386341"
+    uid: 8206a939-115c-43e6-bab3-26fd3d5bcc39
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: acmefit
+        pod-template-hash: 65ddcdb87d
+        service: cart
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: acmefit
+          pod-template-hash: 65ddcdb87d
+          service: cart
+      spec:
+        containers:
+        - env:
+          - name: REDIS_HOST
+            value: cart-redis
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: cart-redis-pass
+          - name: REDIS_PORT
+            value: "6379"
+          - name: CART_PORT
+            value: "5000"
+          - name: USER_HOST
+            value: users
+          - name: USER_PORT
+            value: "8083"
+          - name: JAEGER_AGENT_HOST
+            value: localhost
+          - name: JAEGER_AGENT_PORT
+            value: "6831"
+          - name: AUTH_MODE
+            value: "1"
+          image: gcr.io/vmwarecloudadvocacy/acmeshop-cart:latest
+          imagePullPolicy: Always
+          name: cart
+          ports:
+          - containerPort: 5000
+            name: cart
+            protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 64Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data
+            name: acmefit-cart-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: acmefit-cart-data
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 5
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2021-07-21T11:51:59Z"
+    generation: 1
+    labels:
+      app: acmefit
+      pod-template-hash: 69d757ddbd
+      service: cart-redis
+    name: cart-redis-69d757ddbd
+    namespace: acam-fitness
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: cart-redis
+      uid: 0c8d640b-60c7-4e8b-9e84-c2f69fe69fa3
+    resourceVersion: "1386241"
+    uid: e4c12bd4-652b-4a4c-a6be-44f589f2e158
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: acmefit
+        pod-template-hash: 69d757ddbd
+        service: cart-redis
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: acmefit
+          pod-template-hash: 69d757ddbd
+          service: cart-redis
+      spec:
+        containers:
+        - env:
+          - name: REDIS_HOST
+            value: cart-redis
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: cart-redis-pass
+          image: bitnami/redis
+          imagePullPolicy: Always
+          name: cart-redis
+          ports:
+          - containerPort: 6379
+            name: redis
+            protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/redis
+            name: cart-redis-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: cart-redis-data
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "1"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2021-07-21T11:14:40Z"
+    generation: 1
+    labels:
+      app: acmefit
+      pod-template-hash: 669b56bc8d
+      service: catalog
+    name: catalog-669b56bc8d
+    namespace: acam-fitness
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: catalog
+      uid: e2b6045a-e54e-4665-8393-53aa3447cf0d
+    resourceVersion: "1386271"
+    uid: 143c9cfd-4d62-4644-8b47-533ad45517d7
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: acmefit
+        pod-template-hash: 669b56bc8d
+        service: catalog
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: acmefit
+          pod-template-hash: 669b56bc8d
+          service: catalog
+      spec:
+        containers:
+        - env:
+          - name: CATALOG_DB_HOST
+            value: catalog-mongo
+          - name: CATALOG_DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: catalog-mongo-pass
+          - name: CATALOG_DB_PORT
+            value: "27017"
+          - name: CATALOG_DB_USERNAME
+            value: mongoadmin
+          - name: CATALOG_PORT
+            value: "8082"
+          - name: CATALOG_VERSION
+            value: v1
+          - name: USERS_HOST
+            value: users
+          - name: USERS_PORT
+            value: "8083"
+          - name: JAEGER_AGENT_HOST
+            value: localhost
+          - name: JAEGER_AGENT_PORT
+            value: "6831"
+          image: gcr.io/vmwarecloudadvocacy/acmeshop-catalog:latest
+          imagePullPolicy: Always
+          name: catalog
+          ports:
+          - containerPort: 8082
+            name: catalog
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data
+            name: acmefit-catalog-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: acmefit-catalog-data
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2021-07-21T11:11:51Z"
+    generation: 1
+    labels:
+      app: acmefit
+      pod-template-hash: 857649f774
+      service: catalog-db
+    name: catalog-mongo-857649f774
+    namespace: acam-fitness
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: catalog-mongo
+      uid: 0c374fb3-a616-4a4a-92aa-bbdd915384b9
+    resourceVersion: "1344327"
+    uid: 1efbb1db-ad00-42d1-b88e-756fe3969343
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: acmefit
+        pod-template-hash: 857649f774
+        service: catalog-db
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: acmefit
+          pod-template-hash: 857649f774
+          service: catalog-db
+      spec:
+        containers:
+        - env:
+          - name: MONGO_INITDB_ROOT_USERNAME
+            value: mongoadmin
+          - name: MONGO_INITDB_DATABASE
+            value: acmefit
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: catalog-mongo-pass
+          image: mongo:4
+          imagePullPolicy: IfNotPresent
+          name: catalog-mongo
+          ports:
+          - containerPort: 27017
+            name: catalog-mongo
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data/db
+            name: mongodata
+          - mountPath: /docker-entrypoint-initdb.d
+            name: mongo-initdb
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: mongodata
+        - configMap:
+            defaultMode: 420
+            name: catalog-initdb-config
+          name: mongo-initdb
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "1"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2021-07-21T12:09:57Z"
+    generation: 1
+    labels:
+      app: acmefit
+      pod-template-hash: 86c5ffb485
+      service: frontend
+    name: frontend-86c5ffb485
+    namespace: acam-fitness
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: frontend
+      uid: fe44b450-b7a4-4e40-890f-0bd4ae032970
+    resourceVersion: "1386195"
+    uid: 1c8e80de-e071-4686-83a6-917aaaea0733
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: acmefit
+        pod-template-hash: 86c5ffb485
+        service: frontend
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: acmefit
+          pod-template-hash: 86c5ffb485
+          service: frontend
+      spec:
+        containers:
+        - env:
+          - name: FRONTEND_PORT
+            value: "3000"
+          - name: USERS_HOST
+            value: users
+          - name: CATALOG_HOST
+            value: catalog
+          - name: ORDER_HOST
+            value: order
+          - name: CART_HOST
+            value: cart
+          - name: USERS_PORT
+            value: "8083"
+          - name: CATALOG_PORT
+            value: "8082"
+          - name: CART_PORT
+            value: "5000"
+          - name: ORDER_PORT
+            value: "6000"
+          - name: JAEGER_AGENT_HOST
+            value: localhost
+          - name: JAEGER_AGENT_PORT
+            value: "6832"
+          image: gcr.io/vmwarecloudadvocacy/acmeshop-front-end:latest
+          imagePullPolicy: Always
+          name: frontend
+          ports:
+          - containerPort: 3000
+            name: frontend
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "1"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2021-07-21T11:41:29Z"
+    generation: 1
+    labels:
+      app: acmefit
+      pod-template-hash: 5ccf744dd4
+      service: order
+    name: order-5ccf744dd4
+    namespace: acam-fitness
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: order
+      uid: d8458a03-d5b2-4218-b508-22fb64a33854
+    resourceVersion: "1386356"
+    uid: d6a2d64c-c081-4317-bb68-e2c2b3631c9f
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: acmefit
+        pod-template-hash: 5ccf744dd4
+        service: order
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: acmefit
+          pod-template-hash: 5ccf744dd4
+          service: order
+      spec:
+        containers:
+        - env:
+          - name: ORDER_DB_HOST
+            value: order-postgres
+          - name: ORDER_DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: order-postgres-pass
+          - name: ORDER_DB_PORT
+            value: "5432"
+          - name: AUTH_MODE
+            value: "1"
+          - name: ORDER_DB_USERNAME
+            value: pgbench
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: order-postgres-pass
+          - name: ORDER_AUTH_DB
+            value: postgres
+          - name: ORDER_PORT
+            value: "6000"
+          - name: PAYMENT_PORT
+            value: "9000"
+          - name: PAYMENT_HOST
+            value: payment
+          - name: USER_HOST
+            value: users
+          - name: USER_PORT
+            value: "8083"
+          - name: JAEGER_AGENT_HOST
+            value: localhost
+          - name: JAEGER_AGENT_PORT
+            value: "6831"
+          image: gcr.io/vmwarecloudadvocacy/acmeshop-order:latest
+          imagePullPolicy: Always
+          name: order
+          ports:
+          - containerPort: 6000
+            name: order
+            protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 64Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data
+            name: acmefit-order-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: acmefit-order-data
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2021-07-21T11:28:18Z"
+    generation: 1
+    labels:
+      app: acmefit
+      pod-template-hash: 6cdb48cc6b
+      service: order-db
+    name: order-postgres-6cdb48cc6b
+    namespace: acam-fitness
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: order-postgres
+      uid: 4b8295e9-a711-48dc-814c-4dfd773579af
+    resourceVersion: "1386310"
+    uid: 21ec7655-62dd-41f7-9113-2523228aeeba
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: acmefit
+        pod-template-hash: 6cdb48cc6b
+        service: order-db
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: acmefit
+          pod-template-hash: 6cdb48cc6b
+          service: order-db
+      spec:
+        containers:
+        - env:
+          - name: POSTGRES_USER
+            value: pgbench
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: order-postgres-pass
+          - name: PGBENCH_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: order-postgres-pass
+          - name: PGDATA
+            value: /var/lib/postgresql/data/pgdata
+          image: postgres:9.5
+          imagePullPolicy: Always
+          name: postgres
+          ports:
+          - containerPort: 5432
+            name: order-postgres
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: postgredb
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: postgredb
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "1"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2021-07-21T11:16:22Z"
+    generation: 1
+    labels:
+      app: acmefit
+      pod-template-hash: 784d9f88c7
+      service: payment
+    name: payment-784d9f88c7
+    namespace: acam-fitness
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: payment
+      uid: 0d0a43db-446c-4726-9d23-2f3457269cfe
+    resourceVersion: "1386331"
+    uid: 818863f2-b400-4b36-913b-029959edd8d5
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: acmefit
+        pod-template-hash: 784d9f88c7
+        service: payment
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: acmefit
+          pod-template-hash: 784d9f88c7
+          service: payment
+      spec:
+        containers:
+        - env:
+          - name: PAYMENT_PORT
+            value: "9000"
+          - name: USERS_HOST
+            value: users
+          - name: USERS_PORT
+            value: "8083"
+          - name: JAEGER_AGENT_HOST
+            value: localhost
+          - name: JAEGER_AGENT_PORT
+            value: "6832"
+          image: gcr.io/vmwarecloudadvocacy/acmeshop-payment:latest
+          imagePullPolicy: Always
+          name: payment
+          ports:
+          - containerPort: 9000
+            name: payment
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "1"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2021-07-21T11:59:58Z"
+    generation: 1
+    labels:
+      app: acmefit
+      pod-template-hash: 775c8cc754
+      service: users
+    name: users-775c8cc754
+    namespace: acam-fitness
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: users
+      uid: 6791760c-1a02-41f2-9e4b-b9dd4ea8d75c
+    resourceVersion: "1386378"
+    uid: 09cfcb19-4e7f-40fa-a377-5b0a48430eb2
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: acmefit
+        pod-template-hash: 775c8cc754
+        service: users
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: acmefit
+          pod-template-hash: 775c8cc754
+          service: users
+      spec:
+        containers:
+        - env:
+          - name: USERS_DB_HOST
+            value: users-mongo
+          - name: USERS_DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: users-mongo-pass
+          - name: USERS_DB_PORT
+            value: "27017"
+          - name: USERS_DB_USERNAME
+            value: mongoadmin
+          - name: USERS_PORT
+            value: "8083"
+          - name: REDIS_HOST
+            value: users-redis
+          - name: REDIS_PORT
+            value: "6379"
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: users-redis-pass
+          - name: JAEGER_AGENT_HOST
+            value: localhost
+          - name: JAEGER_AGENT_PORT
+            value: "6831"
+          image: gcr.io/vmwarecloudadvocacy/acmeshop-user:latest
+          imagePullPolicy: Always
+          name: users
+          ports:
+          - containerPort: 8083
+            name: users
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data
+            name: acmefit-users-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: acmefit-users-data
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2021-07-21T11:47:47Z"
+    generation: 1
+    labels:
+      app: acmefit
+      pod-template-hash: c46664f69
+      service: users-mongo
+    name: users-mongo-c46664f69
+    namespace: acam-fitness
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: users-mongo
+      uid: 401fae9b-cd94-4e07-a7cc-492339420d62
+    resourceVersion: "1386159"
+    uid: 0eed252e-ad80-4c15-a427-09125e53c1b5
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: acmefit
+        pod-template-hash: c46664f69
+        service: users-mongo
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: acmefit
+          pod-template-hash: c46664f69
+          service: users-mongo
+      spec:
+        containers:
+        - env:
+          - name: MONGO_INITDB_ROOT_USERNAME
+            value: mongoadmin
+          - name: MONGO_INITDB_DATABASE
+            value: acmefit
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: users-mongo-pass
+          image: mongo:4
+          imagePullPolicy: IfNotPresent
+          name: users-mongo
+          ports:
+          - containerPort: 27017
+            name: users-mongo
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data/db
+            name: mongodata
+          - mountPath: /docker-entrypoint-initdb.d
+            name: mongo-initdb
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: mongodata
+        - configMap:
+            defaultMode: 420
+            name: users-initdb-config
+          name: mongo-initdb
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2021-07-21T11:48:09Z"
+    generation: 1
+    labels:
+      app: acmefit
+      pod-template-hash: cdd796598
+      service: users-redis
+    name: users-redis-cdd796598
+    namespace: acam-fitness
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: users-redis
+      uid: efb21c3f-f026-43e2-b4a3-203a7b34f282
+    resourceVersion: "1386284"
+    uid: a7cb4921-bea6-444d-a061-aafb7283822f
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: acmefit
+        pod-template-hash: cdd796598
+        service: users-redis
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: acmefit
+          pod-template-hash: cdd796598
+          service: users-redis
+      spec:
+        containers:
+        - env:
+          - name: REDIS_HOST
+            value: users-redis
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: users-redis-pass
+          image: bitnami/redis
+          imagePullPolicy: Always
+          name: users-redis
+          ports:
+          - containerPort: 6379
+            name: redis
+            protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/redis
+            name: users-redis-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: users-redis-data
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""
