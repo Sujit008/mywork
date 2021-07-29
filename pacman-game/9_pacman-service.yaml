@@ -8,7 +8,7 @@ metadata:
 spec:
   type: NodePort
   externalIPs:
-   - 103.142.174.171
+   - xx.xx.xx.xx 
   ports:
     - port: 8081
       targetPort: 8080
